@@ -1,0 +1,2 @@
+https://rsshub.app/rsshub/rss
+http://blog.npmjs.org/rss
