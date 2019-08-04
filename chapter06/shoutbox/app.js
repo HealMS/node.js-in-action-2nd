@@ -35,31 +35,38 @@ app.use(session({
 app.use(messages);
 
 if (app.get('env') === 'development') {
-  app.use(errorHandler());
+    app.use(errorHandler());
 }
 app.set("json spaces", 2);
 
 app.get('/', entries.list);
 app.use('/users', usersRouter);
 app.get('/post', entries.form);  //一般路由参数就是路径和路由处理函数, 但是中间实际上可以加入校验的中间件
+<<<<<<< HEAD
 app.post('/post', validate.required('entry[title]'), validate.lengthAbove('entry[title]', 4), entries.submit);
 app.get('/register', register.form);
 app.post('/register', register.submit);
+=======
+app.post('/post', 
+        validate.required('entry[title]'), 
+        validate.lengthAbove('entry[title]', 4), 
+        entries.submit);
+>>>>>>> ec73f379e3ad50146f8083d6f0d0f5868c0c1979
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+app.use(function (req, res, next) {
+    next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+app.use(function (err, req, res, next) {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
 });
 
 module.exports = app;
