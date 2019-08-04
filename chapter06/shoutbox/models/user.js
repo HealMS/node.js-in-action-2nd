@@ -25,7 +25,7 @@ class User {
         const id = this.id;
         db.set(`user:id:${this.name}`, id, err => {
             if (err) return cb(err);
-            db.hmset(`user:${id}`, this, err => cb(err));
+            db.hmset(`user:${id}`, this, err => cb(err));  //hgetall user:id在数据库中访问
         });
     }
     hashPassword(cb) {
@@ -36,8 +36,36 @@ class User {
                 if (err) cb(err);
                 this.pass = hash;
                 cb();
-            })
-        })
+            });
+        });
+    }
+    /** 获取用户数据 */
+    static getByName(name, cb) {
+        User.getId(name, (err, id) => {
+            if (err) return cb(err);
+            User.get(id, cb);
+        });
+    }
+    static getId(name, cb) {
+        db.get(`user:id:${name}`, cb);
+    }
+    static get(id, cb) {
+        db.hgetall(`user:${id}`, (err, user) => {
+            if (err) return cb(err);
+            cb(null, new User(user));
+        });
+    }
+    /** 用户登录验证 */
+    static authenticate(name, pass, cb) {
+        User.getByName(name, (err, user) => {
+            if (err) return cb(err);
+            if (!user.id) return cb();
+            bcrypt.hash(pass, user.salt, (err, hash) => {
+                if (err) return cb(err);
+                if (hash === user.pass) return cb(null, user);
+                cb();
+            });
+        });
     }
 }
 
