@@ -1,4 +1,5 @@
 const redis = require('redis');
+const bcrypt = require('bcrypt');
 const db = redis.createClient();
 const saltRound = 10;
 class User {
