@@ -13,6 +13,7 @@ var entries = require('./routes/entries');
 var validate = require('./middleware/validate');
 var register = require('./routes/register');
 var messages = require('./middleware/message');
+var login = require('./routes/login');
 
 var app = express();
 
@@ -30,7 +31,7 @@ app.use(methodOverride());
 app.use(session({
   secret: 'secret', //签名, 与sessionId一起哈希加密
   resave: false,  //是否每次都重新保存会话, 建议设置为false
-  saveUninitialized: true,  //是否自动保存未初始化的回话
+  saveUninitialized: true,  //是否自动保存未初始化的会话
 }));
 app.use(messages);
 
@@ -50,6 +51,9 @@ app.post('/post',
         validate.required('entry[title]'), 
         validate.lengthAbove('entry[title]', 4), 
         entries.submit);
+app.get('/login', login.form);
+app.post('/login', login.submit);
+app.get('/logout', login.logout);
 
 
 // catch 404 and forward to error handler

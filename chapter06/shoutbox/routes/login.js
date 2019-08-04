@@ -1,0 +1,22 @@
+exports.form = (req, res) => {
+    res.render('login', {title: 'Login'});
+};
+exports.submit = (req, res, next) => {
+    const {name, pass} = req.body.user;
+    User.authenticate(name, pass, (err, user) => {
+        if (err) return next(err);
+        if (user) {
+            req.session.uid = id;
+            req.redirect('/');
+        } else {
+            res.error('Sorry! invslid credentials.');
+            res.redirect('back');
+        }
+    })
+}
+exports.logout = (req, res, next) => {
+    req.session.destroy(err => {
+        if (err) return next(err);
+        res.redirect('/');
+    });
+};
