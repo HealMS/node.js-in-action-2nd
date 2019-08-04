@@ -12,9 +12,9 @@ module.exports = (req, res, next) => {
     res.error = msg => {
         return res.message(msg, 'error');
     };
-    res.locals.messages = res.session.messages || [];
+    res.locals.messages = req.session.messages || [];  //这里是req.session
     res.locals.removeMessages = () => {
-        res.session.messages = [];
+        req.session.messages = [];
     };
     next();
 };
