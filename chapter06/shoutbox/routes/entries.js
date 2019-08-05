@@ -15,7 +15,11 @@ exports.submit = (req, res, next) => {
     });
     entry.save(err => {
         if (err) return next(err);
-        res.redirect('/');
+        if (req.remoteUser) {  //用户已登录的状态
+            res.json({message: "Entry add."});
+        } else {
+            res.redirect('/');
+        }
     });
 };
 exports.list = (req, res, next) => {
