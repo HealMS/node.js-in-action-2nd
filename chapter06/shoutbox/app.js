@@ -14,6 +14,7 @@ var validate = require('./middleware/validate');
 var register = require('./routes/register');
 var messages = require('./middleware/message');
 var login = require('./routes/login');
+var api = require('./routes/api');
 
 var app = express();
 
@@ -33,6 +34,7 @@ app.use(session({
   saveUninitialized: true,  //是否自动保存未初始化的会话
 }));
 app.use(methodOverride());
+app.use('/api', api.auth);  //对指定路由使用中间件
 app.use(user);
 app.use(messages);
 
