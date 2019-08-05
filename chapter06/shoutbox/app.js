@@ -14,6 +14,7 @@ var validate = require('./middleware/validate');
 var register = require('./routes/register');
 var messages = require('./middleware/message');
 var login = require('./routes/login');
+var user = require('./middleware/user');
 var api = require('./routes/api');
 
 var app = express();
@@ -29,9 +30,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));  //静态文件夹
 // session
 app.use(session({
-  secret: 'secret', //签名, 与sessionId一起哈希加密
-  resave: false,  //是否每次都重新保存会话, 建议设置为false
-  saveUninitialized: true,  //是否自动保存未初始化的会话
+    name: 'sessionID',
+    secret: 'secret', //签名, 与sessionId一起哈希加密
+    resave: false,  //是否每次都重新保存会话, 建议设置为false
+    saveUninitialized: true,  //是否自动保存未初始化的会话
+    cookie: {
+        maxAge: 5 * 1000
+    },
 }));
 app.use(methodOverride());
 app.use('/api', api.auth);  //对指定路由使用中间件
@@ -50,10 +55,10 @@ app.get('/post', entries.form);  //一般路由参数就是路径和路由处理
 app.post('/post', validate.required('entry[title]'), validate.lengthAbove('entry[title]', 4), entries.submit);
 app.get('/register', register.form);
 app.post('/register', register.submit);
-app.post('/post', 
-        validate.required('entry[title]'), 
-        validate.lengthAbove('entry[title]', 4), 
-        entries.submit);
+app.post('/post',
+    validate.required('entry[title]'),
+    validate.lengthAbove('entry[title]', 4),
+    entries.submit);
 app.get('/login', login.form);
 app.post('/login', login.submit);
 app.get('/logout', login.logout);

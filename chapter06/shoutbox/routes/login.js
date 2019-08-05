@@ -1,13 +1,15 @@
+const User = require('../models/user');
 exports.form = (req, res) => {
-    res.render('login', {title: 'Login'});
+    res.render('login', { title: 'Login' });
 };
 exports.submit = (req, res, next) => {
-    const {name, pass} = req.body.user;
+    const { name, pass } = req.body.user;
     User.authenticate(name, pass, (err, user) => {
         if (err) return next(err);
         if (user) {
-            req.session.uid = id;
-            req.redirect('/');
+            req.session.uid = user.id;
+            req.session.isVisited = true;
+            res.redirect('/');
         } else {
             res.error('Sorry! invslid credentials.');
             res.redirect('back');
