@@ -68,6 +68,13 @@ class User {
             });
         });
     }
+    /** JSON.stringify会调用对象中的toJSON方法,不存在就转换整个对象 */
+    toJSON() {
+        return {
+            id: this.id,
+            name: this.name
+        };
+    }
 }
 
 module.exports = User;

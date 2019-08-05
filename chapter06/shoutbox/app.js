@@ -62,6 +62,7 @@ app.post('/post',
 app.get('/login', login.form);
 app.post('/login', login.submit);
 app.get('/logout', login.logout);
+app.get('/api/user/:id', api.user);
 
 
 // catch 404 and forward to error handler
