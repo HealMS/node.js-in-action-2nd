@@ -27,12 +27,13 @@ app.use(express.urlencoded({ extended: true }));  //要处理表单时置为true
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));  //静态文件夹
 // session
-app.use(methodOverride());
 app.use(session({
   secret: 'secret', //签名, 与sessionId一起哈希加密
   resave: false,  //是否每次都重新保存会话, 建议设置为false
   saveUninitialized: true,  //是否自动保存未初始化的会话
 }));
+app.use(methodOverride());
+app.use(user);
 app.use(messages);
 
 if (app.get('env') === 'development') {
