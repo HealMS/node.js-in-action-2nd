@@ -6,7 +6,7 @@
     "start": "cross-env PORT=8000 NODE_ENV=development nodemon ./bin/www"
   },
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "cookie-parser": "~1.4.4",
     "debug": "~4.1.1",
     "ejs": "~2.6.2",
